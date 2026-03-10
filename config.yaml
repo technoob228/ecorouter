@@ -1,0 +1,37 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+  domain: api.ecorouter.org
+
+fees:
+  eco_percent: 5
+  ops_percent: 4
+
+crypto:
+  network: tron
+  deposit_address: "${TRON_DEPOSIT_ADDRESS}"
+  eco_wallet: "${TRON_ECO_WALLET}"
+  ops_wallet: "${TRON_OPS_WALLET}"
+  trongrid_api_key: "${TRONGRID_API_KEY}"
+  deposit_poll_interval_seconds: 30
+
+openrouter:
+  base_url: "https://openrouter.ai/api/v1"
+  provisioning_key: "${OPENROUTER_PROVISIONING_KEY}"
+  usage_poll_interval_seconds: 300
+
+charity:
+  donation_threshold_usdt: 50
+  rotation:
+    - name: COTAP
+      category: carbon
+      months: [1, 4, 7, 10]
+    - name: WaterAid
+      category: water
+      months: [2, 5, 8, 11]
+    - name: Oceanic Society
+      category: ocean
+      months: [3, 6, 9, 12]
+
+database:
+  path: "./ecorouter.db"

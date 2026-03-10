@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRouter — Same API. Greener planet.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #ffffff; line-height: 1.6; }
+        code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+        a { color: #16a34a; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero */
+        .hero { padding: 80px 0 60px; text-align: center; }
+        .logo { font-size: 28px; font-weight: 700; margin-bottom: 24px; }
+        .logo .eco { color: #16a34a; }
+        .logo .router { color: #1a1a1a; }
+        .hero h1 { font-size: 36px; font-weight: 600; margin-bottom: 12px; line-height: 1.2; }
+        .hero .subtitle { font-size: 18px; color: #666; margin-bottom: 32px; }
+        .code-block { background: #f4f4f5; border-radius: 8px; padding: 20px 24px; text-align: left; font-size: 14px; overflow-x: auto; margin-bottom: 24px; display: inline-block; }
+        .code-block .comment { color: #6b7280; }
+        .code-block .string { color: #16a34a; }
+        .code-block .keyword { color: #7c3aed; }
+        .hero .tagline { font-size: 16px; color: #444; margin-bottom: 32px; }
+        .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: inline-block; }
+        .btn-primary { background: #16a34a; color: white; }
+        .btn-primary:hover { background: #15803d; text-decoration: none; }
+        .btn-secondary { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        .btn-secondary:hover { background: #dcfce7; text-decoration: none; }
+
+        /* Sections */
+        section { padding: 60px 0; }
+        section h2 { font-size: 24px; font-weight: 600; margin-bottom: 24px; }
+        .section-muted { background: #f8faf9; }
+
+        /* Flow diagram */
+        .flow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+        .flow-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px 20px; text-align: center; min-width: 140px; }
+        .flow-arrow { color: #16a34a; font-size: 24px; }
+        .split-detail { font-size: 14px; color: #444; }
+        .split-detail span { display: block; margin: 4px 0; }
+        .trust-line { text-align: center; color: #666; font-size: 15px; margin-top: 16px; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: #f0fdf4; border-radius: 8px; padding: 20px; text-align: center; }
+        .stat-value { font-size: 28px; font-weight: 700; color: #16a34a; font-family: 'JetBrains Mono', monospace; }
+        .stat-label { font-size: 13px; color: #666; margin-top: 4px; }
+
+        /* Donation table */
+        .donations-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .donations-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #e5e7eb; font-weight: 500; color: #666; }
+        .donations-table td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; }
+        .donations-table a { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+        /* Wallet */
+        .wallet-addr { background: #f0fdf4; padding: 8px 16px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; display: inline-block; cursor: pointer; }
+        .wallet-addr:hover { background: #dcfce7; }
+
+        /* Problem */
+        .fact { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+        .fact-icon { font-size: 20px; flex-shrink: 0; width: 28px; text-align: center; }
+        .fact-text { font-size: 15px; }
+        .fact-text strong { font-weight: 600; }
+
+        /* Steps */
+        .step { margin-bottom: 32px; }
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #16a34a; color: white; border-radius: 50%; font-size: 14px; font-weight: 600; margin-right: 8px; }
+        .step h3 { display: inline; font-size: 16px; font-weight: 600; }
+        .step .code-block { margin-top: 12px; display: block; }
+
+        /* FAQ */
+        .faq-item { border-bottom: 1px solid #e5e7eb; }
+        .faq-q { padding: 16px 0; cursor: pointer; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+        .faq-q::after { content: '+'; font-size: 20px; color: #16a34a; transition: transform 0.2s; }
+        .faq-item.open .faq-q::after { content: '−'; }
+        .faq-a { padding: 0 0 16px; color: #444; font-size: 14px; line-height: 1.7; display: none; }
+        .faq-item.open .faq-a { display: block; }
+
+        /* Footer */
+        footer { padding: 40px 0; text-align: center; color: #666; font-size: 14px; border-top: 1px solid #e5e7eb; }
+        footer a { color: #16a34a; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 26px; }
+            .code-block { font-size: 12px; padding: 14px 16px; }
+            .flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="logo"><span class="eco">eco</span><span class="router">router</span></div>
+        <h1>OpenAI-compatible API that funds<br>the planet with every request.</h1>
+        <p class="subtitle">Change one line of code. Same models. Greener footprint.</p>
+        <div class="code-block">
+            <span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br><br>
+            client = OpenAI(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;api_key=<span class="string">"eco_sk_..."</span>,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;base_url=<span class="string">"https://api.ecorouter.org/v1"</span><br>
+            )
+        </div>
+        <p class="tagline">Every token plants a seed.</p>
+        <div class="buttons">
+            <a href="#start" class="btn btn-primary">Get API Key</a>
+            <a href="#stats" class="btn btn-secondary">View Live Stats ↓</a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="section-muted">
+    <div class="container">
+        <h2>How every dollar flows</h2>
+        <div class="flow">
+            <div class="flow-box">Your App</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">
+                <strong>EcoRouter</strong>
+                <div class="split-detail">
+                    <span>91% → LLM provider</span>
+                    <span>5% → Eco fund</span>
+                    <span>4% → Operations</span>
+                </div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">OpenAI / Claude / Llama</div>
+        </div>
+        <p class="trust-line">Every wallet is public. Every transaction on-chain. <strong>Don't trust us — verify.</strong></p>
+    </div>
+</section>
+
+<!-- Live Impact -->
+<section id="stats">
+    <div class="container">
+        <h2>Live Impact <span id="live-dot" style="color:#16a34a; font-size:10px;">●</span></h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-users">0</div>
+                <div class="stat-label">developers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$<span id="stat-deposited">0</span></div>
+                <div class="stat-label">total deposited</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$<span id="stat-eco">0</span></div>
+                <div class="stat-label">eco collected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">$<span id="stat-donated">0</span></div>
+                <div class="stat-label">donated to funds</div>
+            </div>
+        </div>
+
+        <div id="fund-info" style="text-align:center; margin-bottom:24px; color:#666; font-size:14px;"></div>
+
+        <div id="donations-container" style="display:none;">
+            <h3 style="font-size:16px; margin-bottom:12px;">Donation History</h3>
+            <table class="donations-table">
+                <thead><tr><th>Date</th><th>Amount</th><th>Fund</th><th>Tx</th></tr></thead>
+                <tbody id="donations-body"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top:24px; text-align:center;">
+            <span>Eco Wallet: </span>
+            <span class="wallet-addr" id="eco-wallet" onclick="copyWallet(this)" title="Click to copy">loading...</span>
+        </div>
+    </div>
+</section>
+
+<!-- The Problem -->
+<section class="section-muted">
+    <div class="container">
+        <h2>The cost of AI</h2>
+        <p style="margin-bottom:24px; color:#666;">Every AI query uses electricity and water. Here's the scale:</p>
+        <div class="fact">
+            <span class="fact-icon">⚡</span>
+            <div class="fact-text"><strong>Data centers: 415 TWh/year</strong> — more than many countries consume</div>
+        </div>
+        <div class="fact">
+            <span class="fact-icon">💧</span>
+            <div class="fact-text"><strong>A single GPT-3 training run</strong> evaporated 700,000 liters of clean freshwater</div>
+        </div>
+        <div class="fact">
+            <span class="fact-icon">📈</span>
+            <div class="fact-text"><strong>By 2030,</strong> AI could consume 3% of global electricity</div>
+        </div>
+        <p style="margin-top:24px; font-size:15px;">We can't stop using AI. But we can make every query count for something.</p>
+    </div>
+</section>
+
+<!-- Getting Started -->
+<section id="start">
+    <div class="container">
+        <h2>Start in 2 minutes</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <h3>Get your API key</h3>
+            <div class="code-block">
+curl -X POST https://api.ecorouter.org/v1/auth/register \<br>
+&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+&nbsp;&nbsp;-d '{"email":"<span class="string">you@example.com</span>"}'
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <h3>Top up with USDT (TRC-20)</h3>
+            <p style="margin-top:8px; color:#444; font-size:14px;">
+                Send any amount to the deposit address from your registration response.
+                Add your unique cents suffix (e.g. $10.042 if your suffix is 042).
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <h3>Use it like OpenAI</h3>
+            <div class="code-block">
+<span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br><br>
+client = OpenAI(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;api_key=<span class="string">"eco_sk_..."</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base_url=<span class="string">"https://api.ecorouter.org/v1"</span><br>
+)<br><br>
+r = client.chat.completions.create(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model=<span class="string">"gpt-4o-mini"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Hello!"</span>}]<br>
+)
+            </div>
+        </div>
+
+        <p style="font-size:15px; color:#444;">That's it. Same SDK. Same models. Greener planet.</p>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section class="section-muted">
+    <div class="container">
+        <h2>Pricing</h2>
+        <p style="margin-bottom:20px; color:#444;">We add 9% on top of provider cost. No hidden fees. No markup on markup.</p>
+        <div style="overflow-x:auto;">
+            <table class="donations-table">
+                <thead><tr><th>Model</th><th>Input/1M</th><th>Output/1M</th><th style="color:#16a34a;">Eco/1M</th></tr></thead>
+                <tbody>
+                    <tr><td>gpt-4o-mini</td><td>$0.164</td><td>$0.654</td><td style="color:#16a34a;">$0.041</td></tr>
+                    <tr><td>gpt-4o</td><td>$2.73</td><td>$10.90</td><td style="color:#16a34a;">$0.68</td></tr>
+                    <tr><td>claude-sonnet-4</td><td>$3.27</td><td>$16.35</td><td style="color:#16a34a;">$0.98</td></tr>
+                    <tr><td>llama-3.3-70b</td><td>$0.109</td><td>$0.436</td><td style="color:#16a34a;">$0.027</td></tr>
+                    <tr><td>deepseek-chat</td><td>$0.153</td><td>$0.305</td><td style="color:#16a34a;">$0.023</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="margin-top:16px; font-size:13px; color:#666;">
+            "Eco/1M" = how much goes to environmental funds per million tokens. That's the 5%.
+        </p>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section>
+    <div class="container">
+        <h2>FAQ</h2>
+        <div class="faq-item">
+            <div class="faq-q">Is this just OpenRouter with a fee on top?</div>
+            <div class="faq-a">Yes, essentially. We route through OpenRouter and add a transparent 9% fee, of which 5% is provably donated to eco funds on-chain. We don't pretend to be something we're not.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Why should I pay 9% more?</div>
+            <div class="faq-a">You shouldn't if you don't care about offsetting AI's environmental impact. We're for developers who do. 9% on gpt-4o-mini is ~$0.04 per million tokens — less than a rounding error in most budgets.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">How do I know the money actually goes to charities?</div>
+            <div class="faq-a">Every eco wallet transaction is on the Tron blockchain. You can see the wallet address, every incoming fee, and every outgoing donation on Tronscan. We can't fake it even if we wanted to.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">What if I send the wrong amount?</div>
+            <div class="faq-a">Use the /v1/auth/claim-deposit endpoint with your tx_hash. We'll match it manually.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Can I choose which fund receives my contribution?</div>
+            <div class="faq-a">Not individually. We rotate monthly between three funds tied to AI's specific environmental damage: COTAP (carbon from electricity), WaterAid (water from cooling), Oceanic Society (ecosystems). Full cycle every 3 months.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Who runs this?</div>
+            <div class="faq-a">One developer. Open source project. No VC funding, no corporation. Just an API proxy, two public wallets, and a commitment to transparency.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">What happens if the project shuts down?</div>
+            <div class="faq-a">Remaining eco wallet balance gets donated in full. The wallet is public — you can verify this happened. Code is open source — anyone can fork and continue.</div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="logo" style="font-size:18px; margin-bottom:12px;"><span class="eco">eco</span><span class="router">router</span></div>
+        <p>Open source LLM proxy for the planet</p>
+        <p style="margin-top:12px;">
+            <a href="https://github.com/ecorouter" target="_blank">GitHub ↗</a> &nbsp;·&nbsp;
+            <a href="/v1/stats" target="_blank">API Stats ↗</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+// FAQ toggle
+document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+    });
+});
+
+// Copy wallet address
+function copyWallet(el) {
+    navigator.clipboard.writeText(el.textContent);
+    const orig = el.textContent;
+    el.textContent = 'Copied!';
+    setTimeout(() => el.textContent = orig, 1500);
+}
+
+// Animate counter
+function animateValue(el, start, end, duration) {
+    const range = end - start;
+    if (range === 0) { el.textContent = end; return; }
+    const startTime = performance.now();
+    function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = start + range * progress;
+        el.textContent = value >= 1000 ? value.toLocaleString('en-US', {maximumFractionDigits: 0}) :
+                         value >= 1 ? value.toFixed(2) : value.toFixed(2);
+        if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
+
+// Fetch stats
+let prevStats = {};
+async function fetchStats() {
+    try {
+        const resp = await fetch('/v1/stats');
+        const data = await resp.json();
+
+        animateValue(document.getElementById('stat-users'), prevStats.users || 0, data.total_users, 800);
+        animateValue(document.getElementById('stat-deposited'), prevStats.deposited || 0, data.total_deposited_usdt, 800);
+        animateValue(document.getElementById('stat-eco'), prevStats.eco || 0, data.total_eco_collected_usdt, 800);
+        animateValue(document.getElementById('stat-donated'), prevStats.donated || 0, data.total_donated_usdt, 800);
+
+        prevStats = { users: data.total_users, deposited: data.total_deposited_usdt, eco: data.total_eco_collected_usdt, donated: data.total_donated_usdt };
+
+        // Eco wallet
+        document.getElementById('eco-wallet').textContent = data.eco_wallet_address;
+
+        // Fund info
+        if (data.next_fund) {
+            document.getElementById('fund-info').innerHTML =
+                'Current fund: <strong>' + data.next_fund.name + '</strong> (' + data.next_fund.category + ')';
+        }
+
+        // Donations
+        if (data.donations && data.donations.length > 0) {
+            document.getElementById('donations-container').style.display = 'block';
+            const tbody = document.getElementById('donations-body');
+            tbody.innerHTML = '';
+            data.donations.forEach(d => {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td>' + d.date + '</td><td>$' + d.amount_usdt.toFixed(2) + '</td><td>' + d.fund_name + '</td><td><a href="' + d.tronscan_url + '" target="_blank">View tx ↗</a></td>';
+                tbody.appendChild(row);
+            });
+        }
+    } catch (e) {
+        console.log('Stats fetch error:', e);
+    }
+}
+
+fetchStats();
+setInterval(fetchStats, 60000);
+</script>
+
+</body>
+</html>
