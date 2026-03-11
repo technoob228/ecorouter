@@ -39,6 +39,7 @@ func (db *DB) migrate() error {
 			deposit_cents_suffix INTEGER UNIQUE NOT NULL,
 			or_key_hash TEXT NOT NULL DEFAULT '',
 			or_key_secret TEXT NOT NULL DEFAULT '',
+			password_hash TEXT NOT NULL DEFAULT '',
 			total_deposited_usdt REAL DEFAULT 0.0,
 			total_eco_usdt REAL DEFAULT 0.0,
 			total_ops_usdt REAL DEFAULT 0.0,
@@ -75,8 +76,25 @@ func (db *DB) migrate() error {
 			processed BOOLEAN DEFAULT FALSE,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		);
+
+		CREATE TABLE IF NOT EXISTS chats (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER REFERENCES users(id),
+			title TEXT NOT NULL DEFAULT 'New chat',
+			messages TEXT NOT NULL DEFAULT '[]',
+			model TEXT NOT NULL DEFAULT 'gpt-4o-mini',
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		);
 	`)
-	return err
+	if err != nil {
+		return err
+	}
+
+	// Add password_hash column if missing (existing DBs)
+	db.conn.Exec("ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''")
+
+	return nil
 }
 
 func GenerateAPIKey() (string, error) {
@@ -108,15 +126,15 @@ func (db *DB) NextCentsSuffix() (int, error) {
 	return 0, fmt.Errorf("could not find unique cents suffix after 100 attempts")
 }
 
-func (db *DB) CreateUser(email string, centsSuffix int) (*User, error) {
+func (db *DB) CreateUser(email string, centsSuffix int, passwordHash string) (*User, error) {
 	apiKey, err := GenerateAPIKey()
 	if err != nil {
 		return nil, fmt.Errorf("generate key: %w", err)
 	}
 
 	result, err := db.conn.Exec(
-		"INSERT INTO users (email, eco_api_key, deposit_cents_suffix) VALUES (?, ?, ?)",
-		email, apiKey, centsSuffix,
+		"INSERT INTO users (email, eco_api_key, deposit_cents_suffix, password_hash) VALUES (?, ?, ?, ?)",
+		email, apiKey, centsSuffix, passwordHash,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("insert user: %w", err)
@@ -139,13 +157,27 @@ func (db *DB) UpdateUserORKey(userID int64, keyHash, keySecret string) error {
 	return err
 }
 
+func (db *DB) GetUserByEmail(email string) (*User, error) {
+	u := &User{}
+	err := db.conn.QueryRow(
+		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
+		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
+		 FROM users WHERE email = ?`, email,
+	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
+		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
 func (db *DB) GetUserByEcoKey(ecoKey string) (*User, error) {
 	u := &User{}
 	err := db.conn.QueryRow(
-		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret,
+		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
 		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
 		 FROM users WHERE eco_api_key = ?`, ecoKey,
-	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret,
+	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
 		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
 	if err != nil {
 		return nil, err
@@ -156,10 +188,10 @@ func (db *DB) GetUserByEcoKey(ecoKey string) (*User, error) {
 func (db *DB) GetUserByID(id int64) (*User, error) {
 	u := &User{}
 	err := db.conn.QueryRow(
-		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret,
+		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
 		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
 		 FROM users WHERE id = ?`, id,
-	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret,
+	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
 		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
 	if err != nil {
 		return nil, err
@@ -180,10 +212,10 @@ func (db *DB) MatchUserByCents(amountUSDT float64) (*User, error) {
 
 	u := &User{}
 	err := db.conn.QueryRow(
-		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret,
+		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
 		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
 		 FROM users WHERE deposit_cents_suffix = ?`, suffix,
-	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret,
+	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
 		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
 	if err != nil {
 		return nil, err
@@ -278,8 +310,10 @@ func (db *DB) GetStats() (*Stats, error) {
 	s := &Stats{}
 
 	db.conn.QueryRow("SELECT COUNT(*) FROM users").Scan(&s.TotalUsers)
-	db.conn.QueryRow("SELECT COALESCE(SUM(total_deposited_usdt), 0) FROM users").Scan(&s.TotalDepositedUSDT)
-	db.conn.QueryRow("SELECT COALESCE(SUM(total_eco_usdt), 0) FROM users").Scan(&s.TotalEcoUSDT)
+	// Only count real on-chain deposits (deposit_log is populated by blockchain watcher only)
+	db.conn.QueryRow("SELECT COALESCE(SUM(amount_usdt), 0) FROM deposit_log").Scan(&s.TotalDepositedUSDT)
+	// Eco fees only from real deposits (joined with deposit_log)
+	db.conn.QueryRow("SELECT COALESCE(SUM(d.eco_fee_usdt), 0) FROM deposits d INNER JOIN deposit_log dl ON d.tx_hash = dl.tx_hash").Scan(&s.TotalEcoUSDT)
 	db.conn.QueryRow("SELECT COALESCE(SUM(amount_usdt), 0) FROM donations").Scan(&s.TotalDonatedUSDT)
 
 	rows, err := db.conn.Query("SELECT id, amount_usdt, fund_name, fund_category, tx_hash, created_at FROM donations ORDER BY created_at DESC LIMIT 50")
@@ -318,9 +352,90 @@ func (db *DB) GetUserDepositHistory(userID int64) ([]Deposit, error) {
 	return deposits, nil
 }
 
+func (db *DB) CreateChat(userID int64, model string) (*Chat, error) {
+	if model == "" {
+		model = "gpt-4o-mini"
+	}
+	result, err := db.conn.Exec(
+		"INSERT INTO chats (user_id, model) VALUES (?, ?)",
+		userID, model,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("insert chat: %w", err)
+	}
+	id, _ := result.LastInsertId()
+	return db.GetChat(id, userID)
+}
+
+func (db *DB) GetChat(chatID, userID int64) (*Chat, error) {
+	c := &Chat{}
+	err := db.conn.QueryRow(
+		`SELECT id, user_id, title, messages, model, created_at, updated_at
+		 FROM chats WHERE id = ? AND user_id = ?`, chatID, userID,
+	).Scan(&c.ID, &c.UserID, &c.Title, &c.Messages, &c.Model, &c.CreatedAt, &c.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func (db *DB) ListChats(userID int64) ([]Chat, error) {
+	rows, err := db.conn.Query(
+		`SELECT id, title, model, created_at, updated_at
+		 FROM chats WHERE user_id = ? ORDER BY updated_at DESC`, userID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var chats []Chat
+	for rows.Next() {
+		var c Chat
+		if err := rows.Scan(&c.ID, &c.Title, &c.Model, &c.CreatedAt, &c.UpdatedAt); err != nil {
+			return nil, err
+		}
+		c.UserID = userID
+		chats = append(chats, c)
+	}
+	return chats, nil
+}
+
+func (db *DB) UpdateChatMessages(chatID int64, title, messages string) error {
+	_, err := db.conn.Exec(
+		"UPDATE chats SET title = ?, messages = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+		title, messages, chatID,
+	)
+	return err
+}
+
+func (db *DB) UpdateUserPassword(userID int64, passwordHash string) error {
+	_, err := db.conn.Exec(
+		"UPDATE users SET password_hash = ? WHERE id = ?",
+		passwordHash, userID,
+	)
+	return err
+}
+
+func (db *DB) UpdateUserAPIKey(userID int64, newKey string) error {
+	_, err := db.conn.Exec(
+		"UPDATE users SET eco_api_key = ? WHERE id = ?",
+		newKey, userID,
+	)
+	return err
+}
+
+func (db *DB) DeleteChat(chatID, userID int64) error {
+	_, err := db.conn.Exec(
+		"DELETE FROM chats WHERE id = ? AND user_id = ?",
+		chatID, userID,
+	)
+	return err
+}
+
 func (db *DB) GetAllActiveUsers() ([]User, error) {
 	rows, err := db.conn.Query(
-		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret,
+		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
 		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
 		 FROM users WHERE or_key_secret != ''`)
 	if err != nil {
@@ -331,7 +446,7 @@ func (db *DB) GetAllActiveUsers() ([]User, error) {
 	var users []User
 	for rows.Next() {
 		var u User
-		rows.Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret,
+		rows.Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
 			&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
 		users = append(users, u)
 	}

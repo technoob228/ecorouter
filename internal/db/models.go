@@ -9,6 +9,7 @@ type User struct {
 	DepositCentsSuffix int       `json:"deposit_cents_suffix"` // unique cents suffix for deposit matching
 	ORKeyHash          string    `json:"-"`
 	ORKeySecret        string    `json:"-"`
+	PasswordHash       string    `json:"-"`
 	TotalDepositedUSDT float64   `json:"total_deposited_usdt"`
 	TotalEcoUSDT       float64   `json:"total_eco_usdt"`
 	TotalOpsUSDT       float64   `json:"total_ops_usdt"`
@@ -44,4 +45,14 @@ type DepositLog struct {
 	UserID      *int64    `json:"user_id"`
 	Processed   bool      `json:"processed"`
 	CreatedAt   time.Time `json:"created_at"`
+}
+
+type Chat struct {
+	ID        int64     `json:"id"`
+	UserID    int64     `json:"user_id"`
+	Title     string    `json:"title"`
+	Messages  string    `json:"messages"` // JSON string
+	Model     string    `json:"model"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

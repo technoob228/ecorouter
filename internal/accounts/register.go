@@ -8,6 +8,7 @@ import (
 
 	"github.com/ecorouter/ecorouter/internal/db"
 	"github.com/ecorouter/ecorouter/internal/openrouter"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Service struct {
@@ -30,7 +31,8 @@ func NewService(database *db.DB, orClient *openrouter.Client, depositAddress str
 }
 
 type RegisterRequest struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type RegisterResponse struct {
@@ -57,6 +59,18 @@ func (s *Service) HandleRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"email is required"}`, http.StatusBadRequest)
 		return
 	}
+	if req.Password == "" || len(req.Password) < 6 {
+		http.Error(w, `{"error":"password must be at least 6 characters"}`, http.StatusBadRequest)
+		return
+	}
+
+	// Hash password
+	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Printf("ERROR: hash password: %v", err)
+		http.Error(w, `{"error":"internal error"}`, http.StatusInternalServerError)
+		return
+	}
 
 	// Get unique cents suffix
 	suffix, err := s.db.NextCentsSuffix()
@@ -67,7 +81,7 @@ func (s *Service) HandleRegister(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create user in DB
-	user, err := s.db.CreateUser(req.Email, suffix)
+	user, err := s.db.CreateUser(req.Email, suffix, string(hash))
 	if err != nil {
 		log.Printf("ERROR: create user: %v", err)
 		http.Error(w, `{"error":"email already registered or internal error"}`, http.StatusConflict)

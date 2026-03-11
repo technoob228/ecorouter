@@ -1,3 +1,11 @@
 ecorouter
+ecorouter-linux
+ecorouter-old
+ecorouter-new
+server
 *.db
+*.sqlite
+*.sqlite3
 .env
+.env.*
+.DS_Store

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRouter — API Docs</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #ffffff; line-height: 1.6; }
+        code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+        a { color: #16a34a; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+        .header {
+            padding: 24px 0;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 40px;
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { font-size: 22px; font-weight: 700; }
+        .logo .eco { color: #16a34a; }
+        .logo .router { color: #1a1a1a; }
+        .back-link { font-size: 13px; color: #6b7280; }
+        .back-link:hover { color: #16a34a; }
+
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: #6b7280; font-size: 15px; margin-bottom: 40px; }
+
+        h2 { font-size: 20px; font-weight: 700; margin: 40px 0 12px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
+        h2:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+        h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; }
+
+        p { margin-bottom: 12px; font-size: 15px; color: #333; }
+        ul { margin: 0 0 16px 24px; }
+        li { font-size: 14px; color: #444; margin-bottom: 6px; }
+
+        .endpoint {
+            background: #f8faf9;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+        }
+        .endpoint-method {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-right: 8px;
+        }
+        .method-post { background: #dbeafe; color: #1d4ed8; }
+        .method-get { background: #dcfce7; color: #16a34a; }
+        .endpoint-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .endpoint-desc {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        pre {
+            background: #1a1a1a;
+            color: #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        pre .comment { color: #6b7280; }
+        pre .str { color: #86efac; }
+        pre .kw { color: #93c5fd; }
+        pre .num { color: #fbbf24; }
+
+        code {
+            background: #f0fdf4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        pre code { background: none; padding: 0; }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .param-table th {
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 600;
+            color: #6b7280;
+            font-size: 12px;
+        }
+        .param-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: top;
+        }
+        .param-table .param-name { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+        .param-table .param-type { color: #16a34a; font-size: 12px; }
+        .param-table .param-req { color: #dc2626; font-size: 11px; font-weight: 500; }
+
+        .note {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .toc {
+            background: #f8faf9;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 40px;
+        }
+        .toc-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        .toc a { display: block; font-size: 14px; color: #555; padding: 3px 0; }
+        .toc a:hover { color: #16a34a; text-decoration: none; }
+
+        footer {
+            padding: 32px 0;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 640px) {
+            .param-table { font-size: 12px; }
+            .param-table th, .param-table td { padding: 6px 8px; }
+            pre { font-size: 12px; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="header-inner">
+            <a href="/" style="text-decoration:none;"><div class="logo"><span class="eco">eco</span><span class="router">router</span></div></a>
+            <a href="/" class="back-link">&larr; Back to home</a>
+        </div>
+    </div>
+
+    <h1>API Documentation</h1>
+    <p class="subtitle">OpenAI-compatible API. Change your base URL, keep your code, fund the planet.</p>
+
+    <div class="toc">
+        <div class="toc-title">Contents</div>
+        <a href="#quickstart">Quick Start</a>
+        <a href="#base-url">Base URL &amp; Auth</a>
+        <a href="#auth-endpoints">Auth Endpoints</a>
+        <a href="#chat-completions">Chat Completions</a>
+        <a href="#models">Models</a>
+        <a href="#balance">Balance &amp; Deposits</a>
+        <a href="#pricing">Pricing &amp; Fee Split</a>
+    </div>
+
+    <!-- Quick Start -->
+    <h2 id="quickstart">Quick Start</h2>
+    <p>EcoRouter is a drop-in replacement for the OpenAI API. If your code works with OpenAI, it works with EcoRouter.</p>
+
+    <h3>Python (OpenAI SDK)</h3>
+<pre><code><span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+
+client = OpenAI(
+    <span class="kw">base_url</span>=<span class="str">"https://api.ecorouter.org/v1"</span>,
+    <span class="kw">api_key</span>=<span class="str">"eco_sk_..."</span>  <span class="comment"># your EcoRouter API key</span>
+)
+
+response = client.chat.completions.create(
+    <span class="kw">model</span>=<span class="str">"openai/gpt-4o-mini"</span>,
+    <span class="kw">messages</span>=[{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Hello!"</span>}]
+)
+print(response.choices[<span class="num">0</span>].message.content)</code></pre>
+
+    <h3>JavaScript (fetch)</h3>
+<pre><code><span class="kw">const</span> resp = <span class="kw">await</span> fetch(<span class="str">"https://api.ecorouter.org/v1/chat/completions"</span>, {
+    <span class="kw">method</span>: <span class="str">"POST"</span>,
+    <span class="kw">headers</span>: {
+        <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>,
+        <span class="str">"Authorization"</span>: <span class="str">"Bearer eco_sk_..."</span>
+    },
+    <span class="kw">body</span>: JSON.stringify({
+        <span class="kw">model</span>: <span class="str">"openai/gpt-4o-mini"</span>,
+        <span class="kw">messages</span>: [{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Hello!"</span>}]
+    })
+});</code></pre>
+
+    <h3>cURL</h3>
+<pre><code>curl https://api.ecorouter.org/v1/chat/completions \
+  -H <span class="str">"Authorization: Bearer eco_sk_..."</span> \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{
+    "model": "openai/gpt-4o-mini",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'</span></code></pre>
+
+    <!-- Base URL -->
+    <h2 id="base-url">Base URL &amp; Authentication</h2>
+
+    <div class="note">
+        <strong>Base URL:</strong> <code>https://api.ecorouter.org/v1</code><br>
+        <strong>Auth:</strong> <code>Authorization: Bearer eco_sk_...</code>
+    </div>
+
+    <p>All requests require an API key passed in the <code>Authorization</code> header. Get your key by signing up via the web UI or the <code>/v1/auth/register</code> endpoint.</p>
+
+    <!-- Auth Endpoints -->
+    <h2 id="auth-endpoints">Auth Endpoints</h2>
+
+    <div class="endpoint">
+        <span class="endpoint-method method-post">POST</span>
+        <span class="endpoint-path">/v1/auth/register</span>
+        <p class="endpoint-desc">Create a new account and get an API key.</p>
+    </div>
+
+    <table class="param-table">
+        <thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td class="param-name">email</td><td class="param-type">string</td><td class="param-req">required</td><td>Your email address</td></tr>
+            <tr><td class="param-name">password</td><td class="param-type">string</td><td class="param-req">required</td><td>At least 6 characters</td></tr>
+        </tbody>
+    </table>
+
+<pre><code><span class="comment"># Request</span>
+curl -X POST https://api.ecorouter.org/v1/auth/register \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"email": "you@example.com", "password": "secret123"}'</span>
+
+<span class="comment"># Response</span>
+{
+  <span class="str">"api_key"</span>: <span class="str">"eco_sk_a1b2c3..."</span>,
+  <span class="str">"deposit_address"</span>: <span class="str">"TLqcLi5nz..."</span>,
+  <span class="str">"deposit_hint"</span>: <span class="str">"Send any whole dollar amount + $0.042 cents (e.g. $10.042, $25.042)"</span>,
+  <span class="str">"balance_usdt"</span>: <span class="num">0</span>
+}</code></pre>
+
+    <div class="endpoint">
+        <span class="endpoint-method method-post">POST</span>
+        <span class="endpoint-path">/v1/auth/login</span>
+        <p class="endpoint-desc">Log in and retrieve your API key.</p>
+    </div>
+
+    <table class="param-table">
+        <thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td class="param-name">email</td><td class="param-type">string</td><td class="param-req">required</td><td>Your email address</td></tr>
+            <tr><td class="param-name">password</td><td class="param-type">string</td><td class="param-req">required</td><td>Your password</td></tr>
+        </tbody>
+    </table>
+
+    <!-- Chat Completions -->
+    <h2 id="chat-completions">Chat Completions</h2>
+
+    <div class="endpoint">
+        <span class="endpoint-method method-post">POST</span>
+        <span class="endpoint-path">/v1/chat/completions</span>
+        <p class="endpoint-desc">Generate a chat completion. Fully OpenAI-compatible.</p>
+    </div>
+
+    <p>This endpoint proxies directly to OpenRouter with your allocated credit. It supports all standard OpenAI parameters:</p>
+
+    <table class="param-table">
+        <thead><tr><th>Parameter</th><th>Type</th><th></th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td class="param-name">model</td><td class="param-type">string</td><td class="param-req">required</td><td>Model ID, e.g. <code>openai/gpt-4o</code>, <code>anthropic/claude-sonnet-4</code></td></tr>
+            <tr><td class="param-name">messages</td><td class="param-type">array</td><td class="param-req">required</td><td>Array of message objects with <code>role</code> and <code>content</code></td></tr>
+            <tr><td class="param-name">stream</td><td class="param-type">boolean</td><td></td><td>Stream response as SSE chunks</td></tr>
+            <tr><td class="param-name">temperature</td><td class="param-type">number</td><td></td><td>Sampling temperature (0-2)</td></tr>
+            <tr><td class="param-name">max_tokens</td><td class="param-type">integer</td><td></td><td>Maximum tokens to generate</td></tr>
+            <tr><td class="param-name">tools</td><td class="param-type">array</td><td></td><td>Function calling / tool use definitions</td></tr>
+        </tbody>
+    </table>
+
+    <div class="note">
+        <strong>Streaming:</strong> Set <code>"stream": true</code> for Server-Sent Events. Works with the OpenAI SDK's <code>stream=True</code> parameter out of the box.
+    </div>
+
+    <!-- Embeddings -->
+    <div class="endpoint">
+        <span class="endpoint-method method-post">POST</span>
+        <span class="endpoint-path">/v1/embeddings</span>
+        <p class="endpoint-desc">Generate embeddings. Same as OpenAI embeddings API.</p>
+    </div>
+
+    <!-- Models -->
+    <h2 id="models">Models</h2>
+
+    <div class="endpoint">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/v1/models</span>
+        <p class="endpoint-desc">List all available models.</p>
+    </div>
+
+    <p>EcoRouter routes through <a href="https://openrouter.ai/models" target="_blank">OpenRouter</a>, giving you access to 200+ models. Use the full model ID with the provider prefix:</p>
+
+    <table class="param-table">
+        <thead><tr><th>Model</th><th>ID</th></tr></thead>
+        <tbody>
+            <tr><td>GPT-4o</td><td class="param-name">openai/gpt-4o</td></tr>
+            <tr><td>GPT-4o Mini</td><td class="param-name">openai/gpt-4o-mini</td></tr>
+            <tr><td>GPT-5</td><td class="param-name">openai/gpt-5</td></tr>
+            <tr><td>Claude Sonnet 4</td><td class="param-name">anthropic/claude-sonnet-4</td></tr>
+            <tr><td>Claude Opus 4</td><td class="param-name">anthropic/claude-opus-4</td></tr>
+            <tr><td>Gemini 2.5 Flash</td><td class="param-name">google/gemini-2.5-flash</td></tr>
+            <tr><td>Gemini 2.5 Pro</td><td class="param-name">google/gemini-2.5-pro</td></tr>
+            <tr><td>DeepSeek V3</td><td class="param-name">deepseek/deepseek-chat</td></tr>
+            <tr><td>DeepSeek R1</td><td class="param-name">deepseek/deepseek-r1</td></tr>
+            <tr><td>Llama 4 Maverick</td><td class="param-name">meta-llama/llama-4-maverick</td></tr>
+        </tbody>
+    </table>
+
+    <p>For the full list, call <code>GET /v1/models</code> or browse <a href="https://openrouter.ai/models" target="_blank">openrouter.ai/models</a>.</p>
+
+    <!-- Balance -->
+    <h2 id="balance">Balance &amp; Deposits</h2>
+
+    <div class="endpoint">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/v1/auth/balance</span>
+        <p class="endpoint-desc">Check your credit balance and deposit info. Requires <code>Authorization</code> header.</p>
+    </div>
+
+<pre><code><span class="comment"># Response</span>
+{
+  <span class="str">"api_credit_total_usdt"</span>: <span class="num">8.90</span>,
+  <span class="str">"api_credit_used_usdt"</span>: <span class="num">1.23</span>,
+  <span class="str">"api_credit_remaining_usdt"</span>: <span class="num">7.67</span>,
+  <span class="str">"deposit_address"</span>: <span class="str">"TLqcLi5nz..."</span>,
+  <span class="str">"deposit_cents_suffix"</span>: <span class="num">42</span>,
+  <span class="str">"deposit_hint"</span>: <span class="str">"Send $X.042 to the deposit address"</span>
+}</code></pre>
+
+    <h3>Adding credits</h3>
+    <p>Send USDT (TRC-20) to the deposit address shown in your balance response. Include your unique cents suffix so we can match the deposit to your account.</p>
+    <p>For example, if your suffix is <code>042</code>, send <code>$10.042</code>, <code>$25.042</code>, etc. The deposit is credited automatically within ~60 seconds.</p>
+
+    <div class="note">
+        <strong>Fee split:</strong> 89% becomes your API credit, 10% goes to the eco fund (environmental donations), 1% covers operations. For a $10.042 deposit, you get $8.94 in API credits.
+    </div>
+
+    <!-- Pricing -->
+    <h2 id="pricing">Pricing &amp; Fee Split</h2>
+    <p>EcoRouter charges the same per-token prices as the underlying providers (via OpenRouter). On top, there's an 11% fee split:</p>
+    <ul>
+        <li><strong>89%</strong> &mdash; your API credit (used for model inference)</li>
+        <li><strong>10%</strong> &mdash; eco fund (donated monthly to environmental organizations)</li>
+        <li><strong>1%</strong> &mdash; operations (servers, infrastructure)</li>
+    </ul>
+    <p>All eco fund transactions are public on the Tron blockchain. See <a href="/transparency">the transparency page</a> for details.</p>
+
+    <div class="endpoint">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/v1/stats</span>
+        <p class="endpoint-desc">Public endpoint. Returns platform stats, eco wallet address, fund rotation, and donation history. No auth required.</p>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="logo" style="font-size:18px; margin-bottom:8px;"><span class="eco">eco</span><span class="router">router</span></div>
+        <p><a href="/">Home</a> &middot; <a href="/chat">Chat</a> &middot; <a href="/transparency">Transparency</a> &middot; <a href="https://github.com/ecorouter" target="_blank">GitHub</a></p>
+    </div>
+</footer>
+
+</body>
+</html>

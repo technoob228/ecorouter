@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRouter — Transparency</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #ffffff; line-height: 1.6; }
+        code, .mono { font-family: 'JetBrains Mono', monospace; }
+        a { color: #16a34a; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+        .header {
+            padding: 24px 0;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 40px;
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { font-size: 22px; font-weight: 700; }
+        .logo .eco { color: #16a34a; }
+        .logo .router { color: #1a1a1a; }
+        .back-link { font-size: 13px; color: #6b7280; }
+        .back-link:hover { color: #16a34a; }
+
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: #6b7280; font-size: 15px; margin-bottom: 32px; }
+
+        /* Balance card */
+        .balance-card {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .balance-item {
+            flex: 1;
+            min-width: 200px;
+            background: #f8faf9;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px 24px;
+        }
+        .balance-item.eco { border-color: #bbf7d0; background: #f0fdf4; }
+        .balance-label { font-size: 12px; color: #9ca3af; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
+        .balance-amount { font-size: 24px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .balance-amount.green { color: #16a34a; }
+        .balance-sub { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+
+        /* Wallet address */
+        .wallet-section {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .wallet-addr {
+            display: inline-block;
+            background: #f0fdf4;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .wallet-addr:hover { background: #dcfce7; }
+        .wallet-links {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .wallet-links a { margin: 0 8px; }
+
+        /* Transactions */
+        h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+        .tx-note { font-size: 13px; color: #9ca3af; margin-bottom: 16px; }
+        .tx-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 40px;
+        }
+        .tx-table th {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 600;
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .tx-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: top;
+        }
+        .tx-table tr:hover { background: #f8faf9; }
+        .tx-hash {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #16a34a;
+        }
+        .tx-addr {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #374151;
+        }
+        .tx-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        .tx-amount.out { color: #dc2626; }
+        .tx-date { color: #9ca3af; font-size: 12px; }
+        .tx-label {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .loading { text-align: center; padding: 40px; color: #9ca3af; font-size: 14px; }
+        .error { text-align: center; padding: 40px; color: #dc2626; font-size: 14px; }
+
+        .empty { text-align: center; padding: 40px; color: #9ca3af; }
+
+        footer {
+            padding: 32px 0;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 640px) {
+            .tx-table { font-size: 12px; }
+            .tx-table th, .tx-table td { padding: 8px 6px; }
+            .balance-card { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="header-inner">
+            <a href="/" style="text-decoration:none;"><div class="logo"><span class="eco">eco</span><span class="router">router</span></div></a>
+            <a href="/" class="back-link">&larr; Back to home</a>
+        </div>
+    </div>
+
+    <h1>Transparency Report</h1>
+    <p class="subtitle">Every outgoing transaction from the eco wallet. Every cent accounted for.</p>
+
+    <div class="wallet-section">
+        <div style="font-size:13px; color:#6b7280; margin-bottom:6px;">Eco Wallet</div>
+        <span class="wallet-addr" id="walletAddr" onclick="copyAddr()">loading...</span>
+        <div class="wallet-links">
+            <a id="tronscanLink" href="#" target="_blank">View on Tronscan</a>
+        </div>
+    </div>
+
+    <div class="balance-card">
+        <div class="balance-item eco">
+            <div class="balance-label">Wallet Balance</div>
+            <div class="balance-amount green" id="balanceUsdt">...</div>
+            <div class="balance-sub">USDT TRC-20</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">Total Donated</div>
+            <div class="balance-amount" id="totalDonated">...</div>
+            <div class="balance-sub">All time outgoing</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">Transactions</div>
+            <div class="balance-amount" id="txCount">...</div>
+            <div class="balance-sub">Outgoing transfers</div>
+        </div>
+    </div>
+
+    <h2>Outgoing Transactions</h2>
+    <p class="tx-note">Only showing outgoing USDT transfers from the eco wallet. Incoming deposits are not shown.</p>
+
+    <div id="txLoading" class="loading">Loading transactions from blockchain...</div>
+    <div id="txError" class="error" style="display:none;"></div>
+    <div id="txEmpty" class="empty" style="display:none;">No outgoing transactions yet. The first donation will be sent on the 1st of the month.</div>
+
+    <table class="tx-table" id="txTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Recipient</th>
+                <th>Tx Hash</th>
+            </tr>
+        </thead>
+        <tbody id="txBody"></tbody>
+    </table>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="logo" style="font-size:18px; margin-bottom:8px;"><span class="eco">eco</span><span class="router">router</span></div>
+        <p>All data fetched live from the Tron blockchain via TronGrid API.</p>
+    </div>
+</footer>
+
+<script>
+(function() {
+    var USDT_CONTRACT = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
+    var WALLET = '';
+
+    // Get wallet address and stats from our API
+    fetch('/v1/stats').then(function(r) { return r.json(); }).then(function(data) {
+        WALLET = data.eco_wallet_address || data.eco_wallet || '';
+        if (!WALLET) {
+            document.getElementById('txLoading').style.display = 'none';
+            document.getElementById('txError').textContent = 'Could not load wallet address.';
+            document.getElementById('txError').style.display = 'block';
+            return;
+        }
+        document.getElementById('walletAddr').textContent = WALLET;
+        document.getElementById('tronscanLink').href = 'https://tronscan.org/#/address/' + WALLET;
+
+        // Show totals — only count real on-chain balance
+        var totalDonated = data.total_donated_usdt || 0;
+        document.getElementById('balanceUsdt').textContent = '$0.00';
+        document.getElementById('totalDonated').textContent = '$' + totalDonated.toFixed(2);
+
+        // Try to get real USDT balance from TronGrid
+        fetch('https://api.trongrid.io/v1/accounts/' + WALLET)
+            .then(function(r) { return r.json(); })
+            .then(function(acct) {
+                var trc20 = (acct.data && acct.data[0] && acct.data[0].trc20) || [];
+                for (var i = 0; i < trc20.length; i++) {
+                    if (trc20[i][USDT_CONTRACT]) {
+                        var bal = (parseFloat(trc20[i][USDT_CONTRACT]) / 1e6).toFixed(2);
+                        document.getElementById('balanceUsdt').textContent = '$' + bal;
+                        break;
+                    }
+                }
+            })
+            .catch(function() {});
+
+        // Show recorded donations from our DB
+        var donations = data.donations || [];
+        if (donations.length > 0) {
+            showDonations(donations);
+        }
+
+        // Also try to load on-chain transactions
+        loadTransactions();
+    }).catch(function(e) {
+        document.getElementById('txLoading').style.display = 'none';
+        document.getElementById('txError').textContent = 'Failed to load stats: ' + e.message;
+        document.getElementById('txError').style.display = 'block';
+    });
+
+    function showDonations(donations) {
+        var tbody = document.getElementById('txBody');
+        donations.forEach(function(d) {
+            var row = document.createElement('tr');
+            var shortHash = d.tx_hash ? d.tx_hash.slice(0, 10) + '...' : '—';
+            var hashLink = d.tronscan_url
+                ? '<a class="tx-hash" href="' + d.tronscan_url + '" target="_blank">' + shortHash + '</a>'
+                : '<span class="tx-hash">' + shortHash + '</span>';
+            row.innerHTML =
+                '<td><span class="tx-date">' + d.date + '</span></td>' +
+                '<td><span class="tx-amount out">-$' + d.amount_usdt.toFixed(2) + '</span></td>' +
+                '<td><span class="tx-label">' + d.fund_name + '</span></td>' +
+                '<td>' + hashLink + '</td>';
+            tbody.appendChild(row);
+        });
+        document.getElementById('txTable').style.display = 'table';
+    }
+
+    function loadTransactions() {
+        // Fetch on-chain TRC-20 transfers from this wallet
+        var url = 'https://api.trongrid.io/v1/accounts/' + WALLET + '/transactions/trc20?limit=200&contract_address=' + USDT_CONTRACT;
+        fetch(url)
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var txs = data.data || [];
+
+                // Filter: only outgoing (from our wallet)
+                var outgoing = txs.filter(function(tx) {
+                    return tx.from === WALLET;
+                });
+
+                document.getElementById('txLoading').style.display = 'none';
+                document.getElementById('txCount').textContent = String(outgoing.length);
+
+                if (outgoing.length === 0) {
+                    // Check if we already have DB donations shown
+                    if (document.getElementById('txBody').children.length === 0) {
+                        document.getElementById('txEmpty').style.display = 'block';
+                    }
+                    return;
+                }
+
+                var tbody = document.getElementById('txBody');
+
+                outgoing.forEach(function(tx) {
+                    var amount = parseFloat(tx.value || 0) / Math.pow(10, parseInt(tx.token_info && tx.token_info.decimals || 6));
+
+                    var date = new Date(parseInt(tx.block_timestamp));
+                    var dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+                    var shortTo = tx.to.slice(0, 8) + '...' + tx.to.slice(-6);
+                    var shortHash = tx.transaction_id.slice(0, 10) + '...';
+
+                    var row = document.createElement('tr');
+                    row.innerHTML =
+                        '<td><span class="tx-date">' + dateStr + '</span></td>' +
+                        '<td><span class="tx-amount out">-$' + amount.toFixed(2) + '</span></td>' +
+                        '<td><a class="tx-addr" href="https://tronscan.org/#/address/' + tx.to + '" target="_blank" title="' + tx.to + '">' + shortTo + '</a></td>' +
+                        '<td><a class="tx-hash" href="https://tronscan.org/#/transaction/' + tx.transaction_id + '" target="_blank" title="' + tx.transaction_id + '">' + shortHash + '</a></td>';
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('txTable').style.display = 'table';
+            })
+            .catch(function(e) {
+                document.getElementById('txLoading').style.display = 'none';
+                // Don't show error if we already have DB data
+                if (document.getElementById('txBody').children.length === 0) {
+                    document.getElementById('txError').textContent = 'Failed to load on-chain transactions: ' + e.message;
+                    document.getElementById('txError').style.display = 'block';
+                }
+            });
+    }
+
+    window.copyAddr = function() {
+        var el = document.getElementById('walletAddr');
+        navigator.clipboard.writeText(el.textContent).then(function() {
+            var orig = el.textContent;
+            el.textContent = 'Copied!';
+            setTimeout(function() { el.textContent = orig; }, 1500);
+        });
+    };
+})();
+</script>
+
+</body>
+</html>

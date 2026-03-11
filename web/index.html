@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoRouter — Same API. Greener planet.</title>
+    <title>EcoRouter — AI that funds the planet</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -16,40 +17,37 @@
         .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
 
         /* Hero */
-        .hero { padding: 80px 0 60px; text-align: center; }
-        .logo { font-size: 28px; font-weight: 700; margin-bottom: 24px; }
+        .hero { padding: 100px 0 80px; text-align: center; }
+        .logo { font-size: 32px; font-weight: 700; margin-bottom: 40px; }
         .logo .eco { color: #16a34a; }
         .logo .router { color: #1a1a1a; }
-        .hero h1 { font-size: 36px; font-weight: 600; margin-bottom: 12px; line-height: 1.2; }
-        .hero .subtitle { font-size: 18px; color: #666; margin-bottom: 32px; }
-        .code-block { background: #f4f4f5; border-radius: 8px; padding: 20px 24px; text-align: left; font-size: 14px; overflow-x: auto; margin-bottom: 24px; display: inline-block; }
-        .code-block .comment { color: #6b7280; }
-        .code-block .string { color: #16a34a; }
-        .code-block .keyword { color: #7c3aed; }
-        .hero .tagline { font-size: 16px; color: #444; margin-bottom: 32px; }
-        .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; display: inline-block; }
+        .logo .leaf { margin-right: 8px; }
+        .hero h1 { font-size: 44px; font-weight: 700; margin-bottom: 20px; line-height: 1.15; letter-spacing: -0.5px; }
+        .hero .subtitle { font-size: 19px; color: #555; margin-bottom: 44px; line-height: 1.5; }
+        .buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 14px 32px; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; border: none; display: inline-block; transition: all 0.2s; }
         .btn-primary { background: #16a34a; color: white; }
-        .btn-primary:hover { background: #15803d; text-decoration: none; }
+        .btn-primary:hover { background: #15803d; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
         .btn-secondary { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
-        .btn-secondary:hover { background: #dcfce7; text-decoration: none; }
+        .btn-secondary:hover { background: #dcfce7; text-decoration: none; transform: translateY(-1px); }
 
         /* Sections */
-        section { padding: 60px 0; }
-        section h2 { font-size: 24px; font-weight: 600; margin-bottom: 24px; }
+        section { padding: 72px 0; }
+        section h2 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        section .section-subtitle { font-size: 16px; color: #666; margin-bottom: 36px; }
         .section-muted { background: #f8faf9; }
 
-        /* Flow diagram */
-        .flow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
-        .flow-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px 20px; text-align: center; min-width: 140px; }
-        .flow-arrow { color: #16a34a; font-size: 24px; }
-        .split-detail { font-size: 14px; color: #444; }
-        .split-detail span { display: block; margin: 4px 0; }
-        .trust-line { text-align: center; color: #666; font-size: 15px; margin-top: 16px; }
+        /* How it works */
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 32px; }
+        .step-card { text-align: center; padding: 8px; }
+        .step-icon { font-size: 40px; margin-bottom: 16px; }
+        .step-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .step-card p { font-size: 14px; color: #555; line-height: 1.6; }
+        .trust-line { text-align: center; color: #555; font-size: 16px; margin-top: 12px; padding-top: 24px; border-top: 1px solid #e5e7eb; }
 
         /* Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
-        .stat-card { background: #f0fdf4; border-radius: 8px; padding: 20px; text-align: center; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: #f0fdf4; border-radius: 12px; padding: 24px; text-align: center; }
         .stat-value { font-size: 28px; font-weight: 700; color: #16a34a; font-family: 'JetBrains Mono', monospace; }
         .stat-label { font-size: 13px; color: #666; margin-top: 4px; }
 
@@ -69,30 +67,149 @@
         .fact-text { font-size: 15px; }
         .fact-text strong { font-weight: 600; }
 
-        /* Steps */
-        .step { margin-bottom: 32px; }
-        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #16a34a; color: white; border-radius: 50%; font-size: 14px; font-weight: 600; margin-right: 8px; }
-        .step h3 { display: inline; font-size: 16px; font-weight: 600; }
-        .step .code-block { margin-top: 12px; display: block; }
+        /* Fund rotation */
+        .funds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+        .fund-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; transition: border-color 0.15s; }
+        .fund-card:hover { border-color: #16a34a; }
+        .fund-icon { font-size: 36px; margin-bottom: 8px; }
+        .fund-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+        .fund-tag { display: inline-block; padding: 2px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; font-size: 11px; color: #16a34a; font-weight: 500; margin-bottom: 12px; }
+        .fund-card p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px; }
+        .fund-months { font-size: 12px; color: #9ca3af; margin-bottom: 8px; }
+        .fund-link { font-size: 13px; font-weight: 500; color: #16a34a; }
+        .rotation-note { max-width: 700px; margin: 0 auto; background: #f8faf9; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; font-size: 13px; color: #555; line-height: 1.7; }
+        .rotation-note strong { color: #1a1a1a; }
+        .rotation-note a { color: #16a34a; }
+        @media (max-width: 768px) { .funds-grid { grid-template-columns: 1fr; } }
+
+        /* API section */
+        .api-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+        .api-feat { padding: 24px; background: #f0fdf4; border-radius: 12px; text-align: center; }
+        .api-feat-icon { font-size: 28px; margin-bottom: 10px; }
+        .api-feat h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .api-feat p { font-size: 13px; color: #555; line-height: 1.6; }
+        .code-block { background: #1a1a1a; color: #e5e7eb; border-radius: 10px; padding: 24px; font-size: 13px; line-height: 1.7; overflow-x: auto; margin-bottom: 32px; text-align: left; }
+        .code-block .comment { color: #6b7280; }
+        .code-block .str { color: #86efac; }
+        .code-block .kw { color: #93c5fd; }
+        @media (max-width: 700px) { .api-features { grid-template-columns: 1fr; } }
+
+        /* Getting started */
+        .getting-started-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 36px; }
+        .gs-step { text-align: center; padding: 28px 16px; background: #f0fdf4; border-radius: 12px; }
+        .gs-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #16a34a; color: white; border-radius: 50%; font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .gs-step h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .gs-step p { font-size: 13px; color: #666; }
+
+        /* Pricing */
+        .pricing-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 32px; text-align: center; }
+        .pricing-box h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+        .pricing-box p { font-size: 15px; color: #555; margin-bottom: 8px; }
+        .pricing-detail { font-size: 14px; color: #666; margin-top: 16px; }
 
         /* FAQ */
         .faq-item { border-bottom: 1px solid #e5e7eb; }
-        .faq-q { padding: 16px 0; cursor: pointer; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+        .faq-q { padding: 18px 0; cursor: pointer; font-weight: 500; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
         .faq-q::after { content: '+'; font-size: 20px; color: #16a34a; transition: transform 0.2s; }
-        .faq-item.open .faq-q::after { content: '−'; }
-        .faq-a { padding: 0 0 16px; color: #444; font-size: 14px; line-height: 1.7; display: none; }
+        .faq-item.open .faq-q::after { content: '\2212'; }
+        .faq-a { padding: 0 0 18px; color: #444; font-size: 14px; line-height: 1.7; display: none; }
         .faq-item.open .faq-a { display: block; }
 
         /* Footer */
-        footer { padding: 40px 0; text-align: center; color: #666; font-size: 14px; border-top: 1px solid #e5e7eb; }
+        footer { padding: 48px 0; text-align: center; color: #666; font-size: 14px; border-top: 1px solid #e5e7eb; }
         footer a { color: #16a34a; }
+        footer .footer-links { margin-top: 12px; }
+        footer .footer-links a { margin: 0 8px; }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.25s;
+        }
+        .modal-overlay.visible {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            margin: 24px;
+            transform: translateY(20px) scale(0.97);
+            opacity: 0;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            position: relative;
+        }
+        .modal-overlay.visible .modal {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; text-align: center; }
+        .modal .modal-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; text-align: center; }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #999;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+        .modal-close:hover { color: #333; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: 6px; }
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .form-group input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1); }
+        .form-btn {
+            width: 100%;
+            padding: 14px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .form-btn:hover { background: #15803d; }
+        .form-btn:disabled { background: #86efac; cursor: not-allowed; }
+        .form-switch { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
+        .form-switch a { color: #16a34a; cursor: pointer; font-weight: 500; }
+        .form-error { color: #dc2626; font-size: 13px; margin-bottom: 16px; display: none; text-align: center; }
+        .form-success { color: #16a34a; font-size: 13px; margin-bottom: 16px; display: none; text-align: center; }
 
         /* Responsive */
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 26px; }
-            .code-block { font-size: 12px; padding: 14px 16px; }
-            .flow { flex-direction: column; }
-            .flow-arrow { transform: rotate(90deg); }
+        @media (max-width: 700px) {
+            .hero { padding: 72px 0 56px; }
+            .hero h1 { font-size: 30px; }
+            .hero .subtitle { font-size: 17px; }
+            .steps-grid { grid-template-columns: 1fr; gap: 24px; }
+            .getting-started-steps { grid-template-columns: 1fr; }
+            .modal { padding: 28px; margin: 16px; }
         }
     </style>
 </head>
@@ -101,20 +218,11 @@
 <!-- Hero -->
 <section class="hero">
     <div class="container">
-        <div class="logo"><span class="eco">eco</span><span class="router">router</span></div>
-        <h1>OpenAI-compatible API that funds<br>the planet with every request.</h1>
-        <p class="subtitle">Change one line of code. Same models. Greener footprint.</p>
-        <div class="code-block">
-            <span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br><br>
-            client = OpenAI(<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;api_key=<span class="string">"eco_sk_..."</span>,<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;base_url=<span class="string">"https://api.ecorouter.org/v1"</span><br>
-            )
-        </div>
-        <p class="tagline">Every token plants a seed.</p>
-        <div class="buttons">
-            <a href="#start" class="btn btn-primary">Get API Key</a>
-            <a href="#stats" class="btn btn-secondary">View Live Stats ↓</a>
+        <div class="logo"><span class="leaf">&#127793;</span><span class="eco">eco</span><span class="router">router</span></div>
+        <h1>AI that funds the planet<br>with every request.</h1>
+        <p class="subtitle">Chat with any AI model. 10% of every dollar<br>goes to environmental funds &mdash; verifiable on-chain.</p>
+        <div class="buttons" id="hero-buttons">
+            <!-- Filled by JS based on auth state -->
         </div>
     </div>
 </section>
@@ -122,33 +230,37 @@
 <!-- How It Works -->
 <section class="section-muted">
     <div class="container">
-        <h2>How every dollar flows</h2>
-        <div class="flow">
-            <div class="flow-box">Your App</div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-box">
-                <strong>EcoRouter</strong>
-                <div class="split-detail">
-                    <span>91% → LLM provider</span>
-                    <span>5% → Eco fund</span>
-                    <span>4% → Operations</span>
-                </div>
+        <h2 style="text-align:center;">How it works</h2>
+        <p class="section-subtitle" style="text-align:center;">Three simple steps. No catch.</p>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-icon">&#128172;</div>
+                <h3>Chat with AI</h3>
+                <p>Use any model: GPT-4, Claude, Llama, DeepSeek, and more. Same quality, same speed.</p>
             </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-box">OpenAI / Claude / Llama</div>
+            <div class="step-card">
+                <div class="step-icon">&#127795;</div>
+                <h3>We donate 10%</h3>
+                <p>Every dollar you spend, 10 cents go to environmental funds. Carbon, water, and ocean conservation.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">&#128279;</div>
+                <h3>Verify on-chain</h3>
+                <p>All donations are public on the blockchain. Every transaction, every recipient, fully transparent.</p>
+            </div>
         </div>
-        <p class="trust-line">Every wallet is public. Every transaction on-chain. <strong>Don't trust us — verify.</strong></p>
+        <p class="trust-line"><strong>Don't trust us &mdash; verify.</strong></p>
     </div>
 </section>
 
 <!-- Live Impact -->
 <section id="stats">
     <div class="container">
-        <h2>Live Impact <span id="live-dot" style="color:#16a34a; font-size:10px;">●</span></h2>
+        <h2>Live Impact <span id="live-dot" style="color:#16a34a; font-size:10px;">&#9679;</span></h2>
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-value" id="stat-users">0</div>
-                <div class="stat-label">developers</div>
+                <div class="stat-label">users</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value">$<span id="stat-deposited">0</span></div>
@@ -177,6 +289,7 @@
         <div style="margin-top:24px; text-align:center;">
             <span>Eco Wallet: </span>
             <span class="wallet-addr" id="eco-wallet" onclick="copyWallet(this)" title="Click to copy">loading...</span>
+            <div style="margin-top:8px;"><a href="/transparency" style="font-size:13px;">All transactions are public &rarr;</a></div>
         </div>
     </div>
 </section>
@@ -187,85 +300,145 @@
         <h2>The cost of AI</h2>
         <p style="margin-bottom:24px; color:#666;">Every AI query uses electricity and water. Here's the scale:</p>
         <div class="fact">
-            <span class="fact-icon">⚡</span>
-            <div class="fact-text"><strong>Data centers: 415 TWh/year</strong> — more than many countries consume</div>
+            <span class="fact-icon">&#9889;</span>
+            <div class="fact-text"><strong>Data centers: 415 TWh/year</strong> &mdash; more than many countries consume</div>
         </div>
         <div class="fact">
-            <span class="fact-icon">💧</span>
+            <span class="fact-icon">&#128167;</span>
             <div class="fact-text"><strong>A single GPT-3 training run</strong> evaporated 700,000 liters of clean freshwater</div>
         </div>
         <div class="fact">
-            <span class="fact-icon">📈</span>
+            <span class="fact-icon">&#128200;</span>
             <div class="fact-text"><strong>By 2030,</strong> AI could consume 3% of global electricity</div>
         </div>
         <p style="margin-top:24px; font-size:15px;">We can't stop using AI. But we can make every query count for something.</p>
     </div>
 </section>
 
+<!-- Where Your Money Goes -->
+<section>
+    <div class="container">
+        <h2 style="text-align:center;">Where your 10% goes</h2>
+        <p class="section-subtitle" style="text-align:center;">Three funds. Monthly rotation. Every cent tracked on-chain.</p>
+
+        <p style="max-width:640px; margin:0 auto 32px; color:#444; font-size:14px; line-height:1.8; text-align:center;">
+            AI's environmental impact hits three areas: carbon emissions from electricity, freshwater consumed by cooling systems, and ecosystem damage from infrastructure. We partner with one fund for each. The eco wallet accumulates 10% of all deposits throughout the month, then sends a single batch donation on the 1st &mdash; publicly visible on the blockchain.
+        </p>
+
+        <div class="funds-grid">
+            <div class="fund-card">
+                <div class="fund-icon">&#127795;</div>
+                <h3>COTAP</h3>
+                <div class="fund-tag">Carbon offsets</div>
+                <p>Carbon Offsets To Alleviate Poverty. Funds forestry projects in developing countries that sequester CO&#8322; while providing income to rural communities.</p>
+                <div class="fund-months">Months: Jan, Apr, Jul, Oct</div>
+                <a href="https://cotap.org" target="_blank" class="fund-link">cotap.org &rarr;</a>
+            </div>
+            <div class="fund-card">
+                <div class="fund-icon">&#128167;</div>
+                <h3>WaterAid</h3>
+                <div class="fund-tag">Clean water</div>
+                <p>Provides clean water, sanitation, and hygiene worldwide. Directly offsets the millions of liters of freshwater evaporated by data center cooling systems.</p>
+                <div class="fund-months">Months: Feb, May, Aug, Nov</div>
+                <a href="https://www.wateraid.org" target="_blank" class="fund-link">wateraid.org &rarr;</a>
+            </div>
+            <div class="fund-card">
+                <div class="fund-icon">&#127754;</div>
+                <h3>Oceanic Society</h3>
+                <div class="fund-tag">Ocean conservation</div>
+                <p>Protects marine ecosystems through science, policy, and community engagement. Counters the broader ecological footprint of global tech infrastructure.</p>
+                <div class="fund-months">Months: Mar, Jun, Sep, Dec</div>
+                <a href="https://www.oceanicsociety.org" target="_blank" class="fund-link">oceanicsociety.org &rarr;</a>
+            </div>
+        </div>
+
+        <div class="rotation-note">
+            <strong>How the rotation works:</strong> Each fund receives donations every 3 months. The eco wallet collects fees continuously, and we send a single batch transfer on the 1st of each month to the active fund. One full cycle = 3 months. All transfers are public USDT transactions on the Tron blockchain &mdash; anyone can verify them on <a href="https://tronscan.org" target="_blank">Tronscan</a>.
+        </div>
+    </div>
+</section>
+
+<!-- API -->
+<section id="api" class="section-muted">
+    <div class="container">
+        <h2 style="text-align:center;">OpenAI-compatible API</h2>
+        <p class="section-subtitle" style="text-align:center;">Change one line. Keep your code. Fund the planet.</p>
+
+        <div class="api-features">
+            <div class="api-feat">
+                <div class="api-feat-icon">&#128268;</div>
+                <h3>Drop-in replacement</h3>
+                <p>Works with any OpenAI SDK, LangChain, LlamaIndex, or custom code. Just swap the base URL.</p>
+            </div>
+            <div class="api-feat">
+                <div class="api-feat-icon">&#128272;</div>
+                <h3>Remote signup</h3>
+                <p>Create an account and get your API key via <code>/v1/auth/register</code>. No dashboard needed.</p>
+            </div>
+            <div class="api-feat">
+                <div class="api-feat-icon">&#127793;</div>
+                <h3>200+ models</h3>
+                <p>GPT-4o, Claude, Gemini, Llama, DeepSeek, and more. Same models, same quality, with impact.</p>
+            </div>
+        </div>
+
+        <div class="code-block"><span class="comment"># Before (OpenAI)</span>
+<span class="kw">client</span> = OpenAI()
+
+<span class="comment"># After (EcoRouter) — that's it</span>
+<span class="kw">client</span> = OpenAI(
+    <span class="kw">base_url</span>=<span class="str">"https://api.ecorouter.org/v1"</span>,
+    <span class="kw">api_key</span>=<span class="str">"eco_sk_..."</span>
+)</div>
+
+        <div style="text-align:center;">
+            <a href="/docs" class="btn btn-primary">See the Docs &rarr;</a>
+            <a href="javascript:void(0)" class="btn btn-secondary" onclick="openModal('signup')" style="margin-left:12px;">Get API key</a>
+        </div>
+    </div>
+</section>
+
 <!-- Getting Started -->
 <section id="start">
     <div class="container">
-        <h2>Start in 2 minutes</h2>
-
-        <div class="step">
-            <span class="step-num">1</span>
-            <h3>Get your API key</h3>
-            <div class="code-block">
-curl -X POST https://api.ecorouter.org/v1/auth/register \<br>
-&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
-&nbsp;&nbsp;-d '{"email":"<span class="string">you@example.com</span>"}'
+        <h2 style="text-align:center;">Get started in 30 seconds</h2>
+        <p class="section-subtitle" style="text-align:center;">No credit card required. Start chatting right away.</p>
+        <div class="getting-started-steps">
+            <div class="gs-step">
+                <div class="gs-num">1</div>
+                <h3>Create a free account</h3>
+                <p>Just your email. That's it.</p>
+            </div>
+            <div class="gs-step">
+                <div class="gs-num">2</div>
+                <h3>Add credits (USDT)</h3>
+                <p>Send any amount to your deposit address.</p>
+            </div>
+            <div class="gs-step">
+                <div class="gs-num">3</div>
+                <h3>Start chatting</h3>
+                <p>Pick a model and go.</p>
             </div>
         </div>
-
-        <div class="step">
-            <span class="step-num">2</span>
-            <h3>Top up with USDT (TRC-20)</h3>
-            <p style="margin-top:8px; color:#444; font-size:14px;">
-                Send any amount to the deposit address from your registration response.
-                Add your unique cents suffix (e.g. $10.042 if your suffix is 042).
-            </p>
+        <div style="text-align:center;">
+            <a href="javascript:void(0)" class="btn btn-primary" onclick="openModal('signup')">Create account &rarr;</a>
         </div>
-
-        <div class="step">
-            <span class="step-num">3</span>
-            <h3>Use it like OpenAI</h3>
-            <div class="code-block">
-<span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI<br><br>
-client = OpenAI(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;api_key=<span class="string">"eco_sk_..."</span>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;base_url=<span class="string">"https://api.ecorouter.org/v1"</span><br>
-)<br><br>
-r = client.chat.completions.create(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;model=<span class="string">"gpt-4o-mini"</span>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;messages=[{<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Hello!"</span>}]<br>
-)
-            </div>
-        </div>
-
-        <p style="font-size:15px; color:#444;">That's it. Same SDK. Same models. Greener planet.</p>
     </div>
 </section>
 
 <!-- Pricing -->
 <section class="section-muted">
     <div class="container">
-        <h2>Pricing</h2>
-        <p style="margin-bottom:20px; color:#444;">We add 9% on top of provider cost. No hidden fees. No markup on markup.</p>
-        <div style="overflow-x:auto;">
-            <table class="donations-table">
-                <thead><tr><th>Model</th><th>Input/1M</th><th>Output/1M</th><th style="color:#16a34a;">Eco/1M</th></tr></thead>
-                <tbody>
-                    <tr><td>gpt-4o-mini</td><td>$0.164</td><td>$0.654</td><td style="color:#16a34a;">$0.041</td></tr>
-                    <tr><td>gpt-4o</td><td>$2.73</td><td>$10.90</td><td style="color:#16a34a;">$0.68</td></tr>
-                    <tr><td>claude-sonnet-4</td><td>$3.27</td><td>$16.35</td><td style="color:#16a34a;">$0.98</td></tr>
-                    <tr><td>llama-3.3-70b</td><td>$0.109</td><td>$0.436</td><td style="color:#16a34a;">$0.027</td></tr>
-                    <tr><td>deepseek-chat</td><td>$0.153</td><td>$0.305</td><td style="color:#16a34a;">$0.023</td></tr>
-                </tbody>
-            </table>
+        <h2 style="text-align:center;">Simple pricing</h2>
+        <p class="section-subtitle" style="text-align:center;">No hidden fees. No subscriptions.</p>
+        <div class="pricing-box">
+            <h3>Pay what you use + 11% fee</h3>
+            <p>10% funds the planet. 1% keeps the lights on.</p>
+            <p class="pricing-detail">Same prices as the AI providers &mdash; we just add 11% on top.<br>No markup on markup. Fully transparent.</p>
+            <div style="margin-top:24px;">
+                <a href="https://openrouter.ai/models" target="_blank" class="btn btn-secondary">See model pricing &rarr;</a>
+            </div>
         </div>
-        <p style="margin-top:16px; font-size:13px; color:#666;">
-            "Eco/1M" = how much goes to environmental funds per million tokens. That's the 5%.
-        </p>
     </div>
 </section>
 
@@ -274,32 +447,36 @@ r = client.chat.completions.create(<br>
     <div class="container">
         <h2>FAQ</h2>
         <div class="faq-item">
-            <div class="faq-q">Is this just OpenRouter with a fee on top?</div>
-            <div class="faq-a">Yes, essentially. We route through OpenRouter and add a transparent 9% fee, of which 5% is provably donated to eco funds on-chain. We don't pretend to be something we're not.</div>
+            <div class="faq-q">What models are available?</div>
+            <div class="faq-a">All major models: GPT-4o, GPT-4o-mini, Claude Sonnet, Claude Opus, Llama, DeepSeek, and more. We route through OpenRouter, so you get access to 200+ models.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q">Why should I pay 9% more?</div>
-            <div class="faq-a">You shouldn't if you don't care about offsetting AI's environmental impact. We're for developers who do. 9% on gpt-4o-mini is ~$0.04 per million tokens — less than a rounding error in most budgets.</div>
+            <div class="faq-q">How do I add credits?</div>
+            <div class="faq-a">After signing up, you'll get a USDT (TRC-20) deposit address. Send any amount to that address with your unique cents suffix, and credits appear in your account automatically.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Why 11% more than using providers directly?</div>
+            <div class="faq-a">10% goes directly to environmental funds on-chain. 1% covers infrastructure and operations. On GPT-4o-mini that's about $0.10 per million tokens &mdash; less than a rounding error for most usage.</div>
         </div>
         <div class="faq-item">
             <div class="faq-q">How do I know the money actually goes to charities?</div>
             <div class="faq-a">Every eco wallet transaction is on the Tron blockchain. You can see the wallet address, every incoming fee, and every outgoing donation on Tronscan. We can't fake it even if we wanted to.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q">What if I send the wrong amount?</div>
-            <div class="faq-a">Use the /v1/auth/claim-deposit endpoint with your tx_hash. We'll match it manually.</div>
+            <div class="faq-q">Is my data private?</div>
+            <div class="faq-a">We don't store your conversations. Requests are proxied to AI providers in real time. We only store your email and usage stats for billing.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q">Can I choose which fund receives my contribution?</div>
-            <div class="faq-a">Not individually. We rotate monthly between three funds tied to AI's specific environmental damage: COTAP (carbon from electricity), WaterAid (water from cooling), Oceanic Society (ecosystems). Full cycle every 3 months.</div>
+            <div class="faq-q">Which funds receive the donations?</div>
+            <div class="faq-a">We rotate monthly between three funds, each tied to a specific environmental damage caused by AI: <a href="https://cotap.org" target="_blank">COTAP</a> (carbon offsets via forestry, Jan/Apr/Jul/Oct), <a href="https://www.wateraid.org" target="_blank">WaterAid</a> (clean water access, Feb/May/Aug/Nov), and <a href="https://www.oceanicsociety.org" target="_blank">Oceanic Society</a> (ocean conservation, Mar/Jun/Sep/Dec). Eco wallet accumulates fees all month, then sends one batch donation on the 1st. See the "Where your 10% goes" section above for details.</div>
         </div>
         <div class="faq-item">
             <div class="faq-q">Who runs this?</div>
-            <div class="faq-a">One developer. Open source project. No VC funding, no corporation. Just an API proxy, two public wallets, and a commitment to transparency.</div>
+            <div class="faq-a">One developer. Open source project. No VC funding, no corporation. Just a proxy, two public wallets, and a commitment to transparency.</div>
         </div>
         <div class="faq-item">
             <div class="faq-q">What happens if the project shuts down?</div>
-            <div class="faq-a">Remaining eco wallet balance gets donated in full. The wallet is public — you can verify this happened. Code is open source — anyone can fork and continue.</div>
+            <div class="faq-a">Remaining eco wallet balance gets donated in full. The wallet is public &mdash; you can verify this happened. Code is open source &mdash; anyone can fork and continue.</div>
         </div>
     </div>
 </section>
@@ -308,18 +485,291 @@ r = client.chat.completions.create(<br>
 <footer>
     <div class="container">
         <div class="logo" style="font-size:18px; margin-bottom:12px;"><span class="eco">eco</span><span class="router">router</span></div>
-        <p>Open source LLM proxy for the planet</p>
-        <p style="margin-top:12px;">
-            <a href="https://github.com/ecorouter" target="_blank">GitHub ↗</a> &nbsp;·&nbsp;
-            <a href="/v1/stats" target="_blank">API Stats ↗</a>
-        </p>
+        <p>AI for the planet</p>
+        <div class="footer-links">
+            <a href="/chat">Chat</a>
+            <a href="https://github.com/ecorouter" target="_blank">GitHub</a>
+            <a href="/v1/stats" target="_blank">Developer API</a>
+        </div>
     </div>
 </footer>
 
+<!-- Sign Up Modal -->
+<div class="modal-overlay" id="modal-signup">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModals()">&times;</button>
+        <h2>Create your account</h2>
+        <p class="modal-subtitle">Start chatting with AI that funds the planet.</p>
+        <div class="form-error" id="signup-error"></div>
+        <div class="form-success" id="signup-success"></div>
+        <form onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label for="signup-password2">Confirm password</label>
+                <input type="password" id="signup-password2" placeholder="Repeat your password" required minlength="6" autocomplete="new-password">
+            </div>
+            <button type="submit" class="form-btn" id="signup-btn">Create account</button>
+        </form>
+        <div class="form-switch">Already have an account? <a onclick="switchModal('login')">Log in</a></div>
+        <div class="form-switch" style="margin-top:8px; font-size:13px; color:#9ca3af;">or <a onclick="switchModal('apikey')">authorize with API key</a></div>
+    </div>
+</div>
+
+<!-- Log In Modal -->
+<div class="modal-overlay" id="modal-login">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModals()">&times;</button>
+        <h2>Welcome back</h2>
+        <p class="modal-subtitle">Log in to continue chatting.</p>
+        <div class="form-error" id="login-error"></div>
+        <div class="form-success" id="login-success"></div>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Your password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="form-btn" id="login-btn">Log in</button>
+        </form>
+        <div class="form-switch">Don't have an account? <a onclick="switchModal('signup')">Sign up</a></div>
+        <div class="form-switch" style="margin-top:8px; font-size:13px; color:#9ca3af;">or <a onclick="switchModal('apikey')">authorize with API key</a></div>
+    </div>
+</div>
+
+<!-- API Key Modal -->
+<div class="modal-overlay" id="modal-apikey">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModals()">&times;</button>
+        <h2>Authorize with API key</h2>
+        <p class="modal-subtitle">Paste your existing EcoRouter API key.</p>
+        <div class="form-error" id="apikey-error"></div>
+        <form onsubmit="handleApiKey(event)">
+            <div class="form-group">
+                <label for="apikey-input">API Key</label>
+                <input type="text" id="apikey-input" placeholder="eco_sk_..." required autocomplete="off" spellcheck="false" style="font-family:'JetBrains Mono',monospace; font-size:14px;">
+            </div>
+            <button type="submit" class="form-btn" id="apikey-btn">Save &amp; Continue</button>
+        </form>
+        <div class="form-switch">Don't have a key? <a onclick="switchModal('signup')">Sign up</a></div>
+    </div>
+</div>
+
 <script>
+// Auth state
+function getApiKey() {
+    return localStorage.getItem('eco_api_key');
+}
+
+function setApiKey(key) {
+    localStorage.setItem('eco_api_key', key);
+}
+
+// Render hero buttons based on auth state
+function renderHeroButtons() {
+    var container = document.getElementById('hero-buttons');
+    if (getApiKey()) {
+        container.innerHTML =
+            '<a href="/chat" class="btn btn-primary">Open Chat &rarr;</a>' +
+            '<a href="#api" class="btn btn-secondary">Start with API &darr;</a>';
+    } else {
+        container.innerHTML =
+            '<a href="javascript:void(0)" class="btn btn-primary" onclick="openModal(\'signup\')">Start chatting &rarr;</a>' +
+            '<a href="javascript:void(0)" class="btn btn-secondary" onclick="openModal(\'login\')">Log in</a>';
+    }
+}
+
+renderHeroButtons();
+
+// Modals
+function openModal(type) {
+    var overlay = document.getElementById('modal-' + type);
+    // Close other modals immediately (not the one we're opening)
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+        if (el !== overlay) {
+            el.classList.remove('visible');
+            el.classList.remove('show');
+            el.querySelectorAll('.form-error, .form-success').forEach(function(msg) {
+                msg.style.display = 'none';
+                msg.textContent = '';
+            });
+        }
+    });
+    overlay.classList.add('show');
+    // Trigger transition on next frame
+    requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+            overlay.classList.add('visible');
+        });
+    });
+    // Focus the first input
+    var input = overlay.querySelector('input[type="email"]') || overlay.querySelector('input[type="text"]');
+    if (input) setTimeout(function() { input.focus(); }, 100);
+}
+
+function closeModals() {
+    document.querySelectorAll('.modal-overlay').forEach(function(el) {
+        el.classList.remove('visible');
+        setTimeout(function() {
+            el.classList.remove('show');
+            // Reset forms
+            el.querySelectorAll('.form-error, .form-success').forEach(function(msg) {
+                msg.style.display = 'none';
+                msg.textContent = '';
+            });
+        }, 250);
+    });
+}
+
+function switchModal(type) {
+    closeModals();
+    setTimeout(function() { openModal(type); }, 280);
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModals();
+    });
+});
+
+// Close modal on Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModals();
+});
+
+// Sign Up
+async function handleSignup(e) {
+    e.preventDefault();
+    var email = document.getElementById('signup-email').value.trim();
+    var password = document.getElementById('signup-password').value;
+    var password2 = document.getElementById('signup-password2').value;
+    var btn = document.getElementById('signup-btn');
+    var errorEl = document.getElementById('signup-error');
+    var successEl = document.getElementById('signup-success');
+
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+
+    if (password !== password2) {
+        errorEl.textContent = 'Passwords do not match';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating account...';
+
+    try {
+        var resp = await fetch('/v1/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password })
+        });
+        var data = await resp.json();
+
+        if (!resp.ok) {
+            throw new Error(data.error || data.message || 'Registration failed');
+        }
+
+        // Store the API key
+        var key = data.api_key || data.key;
+        if (key) {
+            setApiKey(key);
+            successEl.textContent = 'Account created! Redirecting...';
+            successEl.style.display = 'block';
+            renderHeroButtons();
+            setTimeout(function() {
+                closeModals();
+                window.location.href = '/chat';
+            }, 1000);
+        } else {
+            throw new Error('No API key in response');
+        }
+    } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Create account';
+    }
+}
+
+// Log In
+async function handleLogin(e) {
+    e.preventDefault();
+    var email = document.getElementById('login-email').value.trim();
+    var password = document.getElementById('login-password').value;
+    var btn = document.getElementById('login-btn');
+    var errorEl = document.getElementById('login-error');
+    var successEl = document.getElementById('login-success');
+
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Logging in...';
+
+    try {
+        var resp = await fetch('/v1/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password })
+        });
+        var data = await resp.json();
+
+        if (!resp.ok) {
+            throw new Error(data.error || data.message || 'Login failed');
+        }
+
+        var key = data.api_key || data.key;
+        if (key) {
+            setApiKey(key);
+            successEl.textContent = 'Welcome back! Redirecting...';
+            successEl.style.display = 'block';
+            renderHeroButtons();
+            setTimeout(function() {
+                closeModals();
+                window.location.href = '/chat';
+            }, 1000);
+        } else {
+            throw new Error('No API key in response');
+        }
+    } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Log in';
+    }
+}
+
+// API Key auth
+function handleApiKey(e) {
+    e.preventDefault();
+    var key = document.getElementById('apikey-input').value.trim();
+    var errorEl = document.getElementById('apikey-error');
+    errorEl.style.display = 'none';
+
+    if (!key) {
+        errorEl.textContent = 'Please enter a valid API key';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    setApiKey(key);
+    window.location.href = '/chat';
+}
+
 // FAQ toggle
-document.querySelectorAll('.faq-q').forEach(q => {
-    q.addEventListener('click', () => {
+document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
         q.parentElement.classList.toggle('open');
     });
 });
@@ -327,20 +777,20 @@ document.querySelectorAll('.faq-q').forEach(q => {
 // Copy wallet address
 function copyWallet(el) {
     navigator.clipboard.writeText(el.textContent);
-    const orig = el.textContent;
+    var orig = el.textContent;
     el.textContent = 'Copied!';
-    setTimeout(() => el.textContent = orig, 1500);
+    setTimeout(function() { el.textContent = orig; }, 1500);
 }
 
 // Animate counter
 function animateValue(el, start, end, duration) {
-    const range = end - start;
+    var range = end - start;
     if (range === 0) { el.textContent = end; return; }
-    const startTime = performance.now();
+    var startTime = performance.now();
     function update(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const value = start + range * progress;
+        var elapsed = now - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var value = start + range * progress;
         el.textContent = value >= 1000 ? value.toLocaleString('en-US', {maximumFractionDigits: 0}) :
                          value >= 1 ? value.toFixed(2) : value.toFixed(2);
         if (progress < 1) requestAnimationFrame(update);
@@ -349,11 +799,11 @@ function animateValue(el, start, end, duration) {
 }
 
 // Fetch stats
-let prevStats = {};
+var prevStats = {};
 async function fetchStats() {
     try {
-        const resp = await fetch('/v1/stats');
-        const data = await resp.json();
+        var resp = await fetch('/v1/stats');
+        var data = await resp.json();
 
         animateValue(document.getElementById('stat-users'), prevStats.users || 0, data.total_users, 800);
         animateValue(document.getElementById('stat-deposited'), prevStats.deposited || 0, data.total_deposited_usdt, 800);
@@ -374,11 +824,11 @@ async function fetchStats() {
         // Donations
         if (data.donations && data.donations.length > 0) {
             document.getElementById('donations-container').style.display = 'block';
-            const tbody = document.getElementById('donations-body');
+            var tbody = document.getElementById('donations-body');
             tbody.innerHTML = '';
-            data.donations.forEach(d => {
-                const row = document.createElement('tr');
-                row.innerHTML = '<td>' + d.date + '</td><td>$' + d.amount_usdt.toFixed(2) + '</td><td>' + d.fund_name + '</td><td><a href="' + d.tronscan_url + '" target="_blank">View tx ↗</a></td>';
+            data.donations.forEach(function(d) {
+                var row = document.createElement('tr');
+                row.innerHTML = '<td>' + d.date + '</td><td>$' + d.amount_usdt.toFixed(2) + '</td><td>' + d.fund_name + '</td><td><a href="' + d.tronscan_url + '" target="_blank">View tx &nearr;</a></td>';
                 tbody.appendChild(row);
             });
         }
@@ -389,6 +839,17 @@ async function fetchStats() {
 
 fetchStats();
 setInterval(fetchStats, 60000);
+
+// Auto-open auth modal from URL param (?auth=signup or ?auth=login)
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var auth = params.get('auth');
+    if (auth === 'signup' || auth === 'login' || auth === 'apikey') {
+        openModal(auth);
+        // Clean URL
+        history.replaceState(null, '', '/');
+    }
+})();
 </script>
 
 </body>
