@@ -15,6 +15,7 @@ type BalanceResponse struct {
 	APICreditTotalUSDT  float64 `json:"api_credit_total_usdt"`
 	APICreditUsedUSDT   float64 `json:"api_credit_used_usdt"`
 	APICreditRemainUSDT float64 `json:"api_credit_remaining_usdt"`
+	FreeRequestsUsed    int     `json:"free_requests_used"`
 	DepositAddress      string  `json:"deposit_address"`
 	DepositCentsSuffix  int     `json:"deposit_cents_suffix"`
 	DepositHint         string  `json:"deposit_hint"`
@@ -59,6 +60,7 @@ func (s *Service) HandleBalance(w http.ResponseWriter, r *http.Request) {
 		APICreditTotalUSDT:  user.TotalAPICreditUSDT,
 		APICreditUsedUSDT:   usedUSDT,
 		APICreditRemainUSDT: user.TotalAPICreditUSDT - usedUSDT,
+		FreeRequestsUsed:    user.FreeRequestsUsed,
 		DepositAddress:      s.depositAddress,
 		DepositCentsSuffix:  user.DepositCentsSuffix,
 		DepositHint:         hint,

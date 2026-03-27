@@ -14,6 +14,7 @@ type User struct {
 	TotalEcoUSDT       float64   `json:"total_eco_usdt"`
 	TotalOpsUSDT       float64   `json:"total_ops_usdt"`
 	TotalAPICreditUSDT float64   `json:"total_api_credit_usdt"`
+	FreeRequestsUsed   int       `json:"free_requests_used"`
 	CreatedAt          time.Time `json:"created_at"`
 }
 

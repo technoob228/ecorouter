@@ -846,6 +846,10 @@
                 </div>
                 <button class="btn-add-funds" id="btnAddFunds">+ Add Funds</button>
             </div>
+            <div id="freeRequestBanner" style="display:none; margin:8px 12px; padding:8px 10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; font-size:12px; color:#166534; line-height:1.4;">
+                <span style="font-size:14px;">🌱</span> <strong>1 free request available</strong><br>
+                <span style="color:#4ade80; font-size:11px;">Uses Gemma 2 — try it out!</span>
+            </div>
             <div class="nav-sep"></div>
             <a href="/docs" class="nav-item" target="_blank">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -934,6 +938,8 @@
                             <div class="model-option" data-value="google/gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite<span class="eco-tag">eco</span></div>
                             <div class="model-option selected" data-value="google/gemini-2.5-flash">Gemini 2.5 Flash<span class="eco-tag">eco</span></div>
                             <div class="model-option" data-value="google/gemini-2.0-flash-001">Gemini 2.0 Flash<span class="eco-tag">eco</span></div>
+                            <div class="model-group-label">Free</div>
+                            <div class="model-option" data-value="google/gemma-2-9b-it:free">Gemma 2 9B<span class="eco-tag">free</span></div>
                             <div class="model-group-label">Open Source</div>
                             <div class="model-option" data-value="meta-llama/llama-4-maverick">Llama 4 Maverick<span class="eco-tag">eco</span></div>
                             <div class="model-option" data-value="meta-llama/llama-3.3-70b-instruct">Llama 3.3 70B<span class="eco-tag">eco</span></div>
@@ -1485,6 +1491,20 @@
         scrollToBottom();
     }
 
+    function addTopUpBanner() {
+        showMessages();
+        const el = document.createElement('div');
+        el.className = 'message assistant';
+        el.innerHTML = `<div class="message-bubble" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;padding:20px 22px;text-align:center;max-width:420px;">
+            <div style="font-size:28px;margin-bottom:8px;">🌍</div>
+            <div style="font-weight:700;font-size:15px;color:#14532d;margin-bottom:6px;">Your free request has been used</div>
+            <div style="font-size:13px;color:#166534;line-height:1.6;margin-bottom:14px;">Add credits and keep using AI while helping the planet.<br>10% of every deposit goes to environmental causes.</div>
+            <button onclick="document.getElementById('fundsModal').classList.remove('hidden')" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;">+ Add Credits</button>
+        </div>`;
+        messagesInner.appendChild(el);
+        scrollToBottom();
+    }
+
     function scrollToBottom() {
         requestAnimationFrame(() => {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -1610,13 +1630,17 @@
 
             if (!resp.ok) {
                 const errText = await resp.text();
-                let raw = '';
+                let raw = '', errType = '';
                 try {
                     const errObj = JSON.parse(errText);
                     raw = (errObj.error && errObj.error.message) || errObj.error || errText;
+                    errType = (errObj.error && errObj.error.type) || '';
                 } catch { raw = errText; }
+                if (errType === 'free_limit_reached' || resp.status === 402) {
+                    throw new Error('__FREE_LIMIT__');
+                }
                 const lower = (typeof raw === 'string' ? raw : JSON.stringify(raw)).toLowerCase();
-                if (resp.status === 402 || resp.status === 403 || lower.includes('limit') || lower.includes('insufficient') || lower.includes('credit') || lower.includes('billing')) {
+                if (resp.status === 403 || lower.includes('limit') || lower.includes('insufficient') || lower.includes('credit') || lower.includes('billing')) {
                     throw new Error('Insufficient balance. Please top up your account to continue chatting.');
                 }
                 throw new Error('Something went wrong. Please try again later.');
@@ -1702,7 +1726,11 @@
         } catch (e) {
             hideThinking();
             if (e.name !== 'AbortError') {
-                addErrorMessage('Error: ' + e.message);
+                if (e.message === '__FREE_LIMIT__') {
+                    addTopUpBanner();
+                } else {
+                    addErrorMessage('Error: ' + e.message);
+                }
             }
         } finally {
             isStreaming = false;
@@ -1842,8 +1870,20 @@
             if (!resp.ok) return;
             const data = await resp.json();
             const remaining = data.api_credit_remaining_usdt || 0;
+            const freeUsed = data.free_requests_used || 0;
             balanceValue.textContent = '$' + remaining.toFixed(2);
             balanceRow.style.display = 'flex';
+            // Free request banner
+            const freeBanner = $('freeRequestBanner');
+            if (remaining <= 0 && freeUsed === 0) {
+                freeBanner.style.display = 'block';
+                selectModel('google/gemma-2-9b-it:free');
+            } else {
+                freeBanner.style.display = 'none';
+                if (remaining <= 0 && freeUsed >= 1) {
+                    // Already used free request — keep default model but show add funds
+                }
+            }
             depositInfo.address = data.deposit_address || '';
             depositInfo.suffix = data.deposit_cents_suffix || 0;
             depositInfo.hint = data.deposit_hint || '';

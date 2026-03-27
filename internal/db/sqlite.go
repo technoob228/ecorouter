@@ -93,6 +93,8 @@ func (db *DB) migrate() error {
 
 	// Add password_hash column if missing (existing DBs)
 	db.conn.Exec("ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''")
+	// Add free_requests_used column if missing (existing DBs)
+	db.conn.Exec("ALTER TABLE users ADD COLUMN free_requests_used INTEGER NOT NULL DEFAULT 0")
 
 	return nil
 }
@@ -161,10 +163,10 @@ func (db *DB) GetUserByEmail(email string) (*User, error) {
 	u := &User{}
 	err := db.conn.QueryRow(
 		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
-		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
+		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, free_requests_used, created_at
 		 FROM users WHERE email = ?`, email,
 	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
-		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
+		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.FreeRequestsUsed, &u.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +177,10 @@ func (db *DB) GetUserByEcoKey(ecoKey string) (*User, error) {
 	u := &User{}
 	err := db.conn.QueryRow(
 		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
-		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
+		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, free_requests_used, created_at
 		 FROM users WHERE eco_api_key = ?`, ecoKey,
 	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
-		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
+		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.FreeRequestsUsed, &u.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -189,10 +191,10 @@ func (db *DB) GetUserByID(id int64) (*User, error) {
 	u := &User{}
 	err := db.conn.QueryRow(
 		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
-		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
+		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, free_requests_used, created_at
 		 FROM users WHERE id = ?`, id,
 	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
-		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
+		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.FreeRequestsUsed, &u.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -213,14 +215,19 @@ func (db *DB) MatchUserByCents(amountUSDT float64) (*User, error) {
 	u := &User{}
 	err := db.conn.QueryRow(
 		`SELECT id, email, eco_api_key, deposit_cents_suffix, or_key_hash, or_key_secret, password_hash,
-		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, created_at
+		        total_deposited_usdt, total_eco_usdt, total_ops_usdt, total_api_credit_usdt, free_requests_used, created_at
 		 FROM users WHERE deposit_cents_suffix = ?`, suffix,
 	).Scan(&u.ID, &u.Email, &u.EcoAPIKey, &u.DepositCentsSuffix, &u.ORKeyHash, &u.ORKeySecret, &u.PasswordHash,
-		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.CreatedAt)
+		&u.TotalDepositedUSDT, &u.TotalEcoUSDT, &u.TotalOpsUSDT, &u.TotalAPICreditUSDT, &u.FreeRequestsUsed, &u.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
 	return u, nil
+}
+
+func (db *DB) IncrementFreeRequestsUsed(userID int64) error {
+	_, err := db.conn.Exec("UPDATE users SET free_requests_used = free_requests_used + 1 WHERE id = ?", userID)
+	return err
 }
 
 func (db *DB) RecordDeposit(userID int64, amount, ecoFee, opsFee, apiCredit float64, txHash string) error {

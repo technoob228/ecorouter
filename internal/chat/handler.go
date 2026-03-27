@@ -123,8 +123,20 @@ func (s *Service) HandleAgent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":{"message":"messages array is required","type":"invalid_request"}}`, http.StatusBadRequest)
 		return
 	}
+
+	// Free request logic: users with no balance get 1 free request on cheapest model
+	noBalance := user.TotalAPICreditUSDT <= 0
+	if noBalance {
+		if user.FreeRequestsUsed >= 1 {
+			w.Header().Set("Content-Type", "application/json")
+			http.Error(w, `{"error":{"message":"free_limit_reached","type":"free_limit_reached"}}`, http.StatusPaymentRequired)
+			return
+		}
+		req.Model = "google/gemma-2-9b-it:free"
+	}
+
 	if req.Model == "" {
-		req.Model = "openai/gpt-4o-mini"
+		req.Model = "google/gemini-2.5-flash"
 	}
 
 	// 3. Build tool definitions if any tools are enabled
@@ -227,7 +239,10 @@ func (s *Service) HandleAgent(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(finalResp)
 	}
 
-	// 6. Save to DB (async-ish, after response is sent for non-streaming)
+	// 6. Save to DB and increment free request counter if applicable
+	if noBalance && user.FreeRequestsUsed == 0 {
+		go s.db.IncrementFreeRequestsUsed(user.ID)
+	}
 	go s.saveChat(user.ID, req.ChatID, req.Model, req.Messages, messages, finalResp)
 }
 
